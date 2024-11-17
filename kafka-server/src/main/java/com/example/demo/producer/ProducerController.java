@@ -1,10 +1,9 @@
 package com.example.demo.producer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,8 +12,14 @@ public class ProducerController {
     private final ProducerService producerService;
 
     @PostMapping("/sendMessage")
-    public ResponseEntity<?> sendMessage(String topic, String message) {
-        producerService.sendMessage(topic, message);
+    public ResponseEntity<?> sendMessage(@RequestParam("message") String message) {
+        producerService.sendMessage(message);
+        return ResponseEntity.ok("Message sent");
+    }
+
+    @PostMapping("/sendUserDto")
+    public ResponseEntity<?> sendUserDto(@RequestBody UserDto userDto) throws JsonProcessingException {
+        producerService.sendUserDto(userDto);
         return ResponseEntity.ok("Message sent");
     }
 }
